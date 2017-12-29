@@ -1,0 +1,23 @@
+---
+# tasks file for hypersrv.wordpress
+- name: download wordpress
+  get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/latest.tar.gz
+
+- name: extract wordpress
+  unarchive:
+    src: /tmp/latest.tar.gz
+    dest: /home/{{app_user}}/www
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    owner: "{{app_user}}"
+    group: "{{app_user}}"
+
+- name: install wp-cli
+  get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: /usr/local/bin/wp
+    group: root
+    owner: root
+    mode: 0755
